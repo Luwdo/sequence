@@ -1,23 +1,73 @@
 <?php
-class query{
-    public $table = null;
-    ///public $class = null;
-    //public $select = '*'; // if array assming that you are aliasing it?
-    //public $where = array();
+/**
+ * Base class of queries within Sequence. 
+ * 
+ * @property int affected_rows Number of affected rows
+ * @property int errno Error number
+ * @property string[] error_list A list of errors (**TODO: Yeah?**)
+ * @property string error String error message
+ * @property int field_count Number of fields in result set
+ * @property mixed insert_id Result of ID generation for the inserted row.
+ * @property int num_rows Number of rows in result set
+ * @property int param_count Number of parameters provided to bound query
+ * @property mixed sqlstate Whats this? **TODO**
+ * @property string table Name of the table or view being selected (Alias of 'from')
+ * 
+ */
+class query {
+    /**
+	 * The table or view which is being selected from.
+	 * 
+	 * @var type 
+	 */
+	public $from = null;
     public $params = array();
-   // public $limit = null;
-   // public $offset = null;
     public $group = array();
-  //  public $order = array();
-  //  public $set = array();
     public $type = null;
     public $result = null;
-//    public $result_type = null;
+	
+    //public $order = array();
+    //public $set = array();
+    //public $limit = null;
+    //public $offset = null;
+    //public $class = null;
+    //public $select = '*'; // if array assuming that you are aliasing it?
+    //public $where = array();
+    //public $result_type = null;
 	
 	public $stmt = null;
 	
-	public function __get($name)
-    {
+	/**
+	 * Allows you to specialize the given query into the type of query
+	 * you are calling specialize() from.
+	 * 
+	 * @param query $query Must be a Sequence query object.
+	 */
+	public static function specialize(query $query)
+	{
+		$class = get_called_class();
+		$instance = new $class();
+		
+		foreach ($query as $k => $v) {
+			$instance->$k = $v;
+		}
+		
+		return $instance;
+	}
+	
+	/**
+	 * Retrieve the value of a semi-protected or generated field.
+	 * 
+	 * @param string $name Name of the field to retrieve.
+	 * @return null
+	 */
+	public function __get($name) {
+		
+		// Make the contents of 'from' available as table.
+		
+		if ($name == 'table')
+			return $this->from;
+		
 		if(in_array($name, array('affected_rows', 'errono', 'error_list', 'error', 'field_count', 'insert_id','num_rows','param_count','sqlstate'))){
 			if(isset($this->stmt) && isset($this->stmt->$name)){
 				return $this->stmt->$name;
@@ -43,107 +93,217 @@ class query{
 //        }
 //    }
     
+	/**
+	 * Convert this object into a string.
+	 * Calls query_string() to determine its value.
+	 * 
+	 * @return string 
+	 */
     public function __toString() {
             return $this->query_string();
     }
     
     //Object Manipulation
     
-    //select
-    public function select($select = null){
-        $this->type = self::SELECT;
-        if($select !== null ){
-            $this->select = $select;
-        }
-        return $this;
+	/**
+	 * Begin a new SELECT operation against this query.
+	 * 
+	 * @param string $select The fields to select in this new SELECT query.
+	 * @return \select_query
+	 */
+    public function select($select = null) {
+		$static = !(isset($this) && get_class($this) == __CLASS__);
+		
+		if ($static)
+			return new select_query ();
+		
+		return select_query::specialize($this);
     }
+	
+	/**
+	 * @deprecated 
+	 */
     public static function new_select($select = null){
-        $query = new query();
-        $query->type = self::SELECT;
-        if($select !== null ){
-            $query->select = $select;
-        }
-        return $query;
+        return new select_query();
     }
     
-    //------
-    //Update
-    public function update(){
-        $this->type = self::UPDATE;
-        return $this;
+	/**
+	 * Begin a new UPDATE operation against this query.
+	 * 
+	 * @return \update_query
+	 */
+    public function update() {
+		$static = !(isset($this) && get_class($this) == __CLASS__);
+		
+		if ($static)
+			return new update_query ();
+		
+		return update_query::specialize($this);
     }
+	
+	/**
+	 * @deprecated 
+	 */
     public static function new_update(){
-        $query = new query();
-        $query->type = self::UPDATE;
-        return $query;
+		return new update_query();
     }
+	
     //------
-    //isset
+    /**
+	 * Begin a new INSERT operation against this query.
+	 * 
+	 * @return \insert_query
+	 */
     public function insert(){
-        $this->type = self::INSERT;
-        return $this;
+		$static = !(isset($this) && get_class($this) == __CLASS__);
+		
+		if ($static)
+			return new insert_query ();
+		
+		return insert_query::specialize($this);
     }
-    public static function new_insert(){
-        $query = new query();
-        $query->type = self::INSERT;
-        return $query;
+	
+	/**
+	 * @deprecated
+	 */
+    public static function new_insert() {
+		return new insert_query();
     }
-    //------
-    //delete
-    public function delete(){
-        $this->type = self::DELETE;
-        return $this;
+	
+	/**
+	 * Begin a new DELETE operation against this query.
+	 * 
+	 * @return \delete_query
+	 */
+    public function delete() {
+		$static = !(isset($this) && get_class($this) == __CLASS__);
+		
+		if ($static)
+			return new delete_query ();
+		
+		return delete_query::specialize($this);
     }
+	
+	/**
+	 * @deprecated 
+	 */
     public static function new_delete(){
         $query = new query();
         $query->type = self::DELETE;
         return $query;
     }
-    //------
+	
+    /**
+	 * Set the table or view which this query is pulling from.
+	 * Alias of from().
+	 * 
+	 * @param string $table
+	 * @return \query
+	 */
     public function table($table){
-        $this->table = '`'.$table.'`';
-        return $this;     
+		return $this->from($table);
     }
+	
+	/**
+	 * Set the table or view which this query is pulling from.
+	 * @param string $tableOrViewName Name of the table or view
+	 * @return \query
+	 */
+	public function from($tableOrViewName) {
+		$this->table = '`'.$tableOrViewName.'`';
+		return $this;
+	}
     
-    public function where($conditions){
+	/**
+	 * Add more conditions to the current query.
+	 * 
+	 * @param type $conditions
+	 * @return \query The new query
+	 * @throws Exception
+	 */
+    public function where($conditions) {
         if(!is_array($conditions))
             throw new Exception('Where conditions must be an array');
+		
         if(count($conditions) == 0)
             throw new Exception('Where conditions must not be an empty array');
+		
         $this->where = array_merge($this->where, $conditions);
         return $this;
     }
     
-    public function set($values){
+	/**
+	 * Declare what content needs to be set within this query.
+	 * 
+	 * @param array $values An associative array of field name => value.
+	 * @return \query The revised query
+	 * @throws Exception when invalid $values are provided or $values is empty
+	 */
+    public function set($values) {
         if(!is_array($values))
             throw new Exception('Set values must be an array');
+		
         if(count($values) == 0)
             throw new Exception('Set values must not be an empty array');
+		
         $this->set = array_merge($this->set, $values);
+		
         return $this;
     }
     
-    public function order_by($mixed, $default_direction = 'ASC'){
-        if(!is_array($mixed)) $this->order[$mixed] = $default_direction;
-        else{
-            foreach($mixed as $column => $direction){
-                if($direction != 'DESC' && $direction != 'ASC') $direction = $default_direction;
-                $this->order[$column] = $direction;
-            }
-        }
+	/**
+	 * Declare that the result set should be ordered by the given field and direction,
+	 * in addition to what the query currently orders by.
+	 * 
+	 * @param mixed $mixed Name of the column to order by, or an associative array containing field => direction
+	 * @param type $default_direction Optional, when $mixed is a string column name, specifies the direction to sort by. 
+	 * @return \query The revised query
+	 */
+    public function order_by($mixed, $default_direction = 'ASC') {
+        if(!is_array($mixed)) {
+			$this->order[$mixed] = $default_direction;
+			return $this;
+		} 
+		
+		foreach($mixed as $column => $direction){
+			if($direction != 'DESC' && $direction != 'ASC') $direction = $default_direction;
+			$this->order[$column] = $direction;
+		}
+		
         return $this;
     }
     
-    public function group_by($mixed){
-        if(!is_array($mixed)) $this->group[] = $mixed;
-        else{
-            if(count($mixed) == 0)
-                throw new Exception('Group by conditions must not be an empty array');
-            $this->group = array_merge($this->group, $mixed);
-        }
+	/**
+	 * Declare that the query should be grouped by the given fields, in addition to what the
+	 * query is currently grouped by.
+	 * 
+	 * @param mixed $mixed Can be string field name or an array of field names.
+	 * @return \query The revised query
+	 * @throws Exception $mixed is an empty array
+	 */
+    public function group_by($mixed) {
+        if(!is_array($mixed)) {
+			$this->group[] = $mixed;
+			return $this;
+		}
+		
+        if (count($mixed) == 0)
+            throw new Exception('Group by conditions must not be an empty array');
+		
+        $this->group = array_merge($this->group, $mixed);
+		
         return $this;
     }
     
+	/**
+	 * Declare that the result set should be limited by the given amount of rows, and 
+	 * optionally offset by the given amount of rows.
+	 * 
+	 * @param int $limit The amount of rows to limit the query by.
+	 * @param int $offset Optional, offset into the result set to start at
+	 * @return \query The revised query
+	 * @throws Exception Limit or offset is non-numeric
+	 */
     public function limit($limit, $offset = null){
         if(!is_numeric($limit))
             throw new Exception('Limit must me numeric');
@@ -155,21 +315,54 @@ class query{
         return $this;
     }
     
+	/**
+	 * Return the first result row of the query. The query will
+	 * be executed if necessary.
+	 * 
+	 * @return object The result row
+	 */
     public function first(){
-        return $this->limit(1)->single_or_null();
+        foreach ($this->limit(1) as $row) 
+			return $row;
     }
     
-    public function single_or_null(){
-        $this->result_type = self::SINGLE_OR_NULL;
-        return $this;
+	/**
+	 * @deprecated 
+	 * @return \query
+	 */
+    public function single_or_null() {
+		throw new Exception("Obsolete.");
     }
     
-    public function result_class($class){
+	/**
+	 * Alias for model().
+	 * 
+	 * @param string $class Name of the class to use
+	 * @return \query The revised query.
+	 */
+    public function result_class($class) {
+		return $this->model($class);
+    }
+	
+	/**
+	 * Set the name of the class to inflate result rows into.
+	 * Class must accept one paramter to its constructor: an
+	 * associative array of the row data. It is responsible for
+	 * integrating this data into the new instance.
+	 * 
+	 * @param string $class Name of the class to use
+	 * @return \query The revised query.
+	 */
+	public function model($class) {
         $this->class = $class;
-        return $this;
-    }
+        return $this;	
+	}
     
-    public function count(){
+	/**
+	 * Return the amount of rows within the result set.
+	 * @return int The amount of rows
+	 */
+    public function count() {
         $currrent_result_type = $this->result_type;
         $this->result_type = self::COUNT;
         $result = $this->run();
@@ -183,20 +376,27 @@ class query{
     
     //SQL Query Generation
     
-    public function run(){
+	/**
+	 * Execute the query.
+	 * 
+	 * @return null
+	 * @throws Exception
+	 */
+    public function run() {
         $query = $this->generate_query();
         
         $mysqli_stmt = core::db()->prepare($query);
         
-        if(!$mysqli_stmt){
+        if(!$mysqli_stmt) {
             throw new Exception('Query Syntax Error : '.$query);
         }
-        if(count($this->params) > 0){
+		
+        if(count($this->params) > 0) {
             $params = $this->build_referenced_parameter_bindings();
             call_user_func_array(array($mysqli_stmt, 'bind_param'), $params);
         }
         
-        if($mysqli_stmt->execute()){
+        if($mysqli_stmt->execute()) {
             switch ($this->type){
                 case self::SELECT:
                     $query_fields = $mysqli_stmt->result_metadata()->fetch_fields();
@@ -230,11 +430,11 @@ class query{
                     $this->result = $mysqli_stmt->affected_rows;
                     break;
             }
-        }
-        else{
+        } else {
             throw new Exception('Query failed Error : '.$mysqli_stmt->error );
         }
-        if($this->result_type == self::SINGLE_OR_NULL){
+		
+        if($this->result_type == self::SINGLE_OR_NULL) {
             if(count($this->result) > 1 || count($this->result) == 0) return null;
             return $this->result[0];
         }
@@ -242,17 +442,18 @@ class query{
         return $this->result;
     }
     
-    public function build_referenced_parameter_bindings(){
+    public function build_referenced_parameter_bindings() {
         $params = array();
         $types = $this->build_parameter_binding_types();
         $params[] = &$types;
-        foreach($this->params as $k => $v){
+		
+        foreach($this->params as $k => $v) {
             $params[] = &$this->params[$k];
         }
         return $params;
     }
     
-    public function build_parameter_binding_types(){
+    public function build_parameter_binding_types() {
         $types = '';                        
         foreach($this->params as $param) {        
             if(is_int($param)) {
@@ -268,10 +469,17 @@ class query{
         return $types; 
     }
     
-    
-    public static function sanatize($input){
+    /**
+	 * Convenience function to sanitize an input so that is escaped according to the
+	 * current SQL engine.
+	 * 
+	 * @param string $input The content to escape
+	 * @return string The escaped content
+	 */
+    public static function sanatize($input) {
         return mysql_real_escape_string($input);
     }
+	
  /*   
     public function generate_query(){
         $this->params = array();
@@ -292,6 +500,11 @@ class query{
         
     }
   */  
+	
+	/**
+	 * Generate the SQL query string.
+	 * @return string
+	 */
     public function query_string(){
         $query = $this->generate_query();
         
@@ -389,7 +602,11 @@ class query{
 //        return ' LIMIT '.$this->limit;
 //    }
     
-    public function generate_group_by(){
+	/**
+	 * Generate a GROUP BY clause
+	 * @return string
+	 */
+    public function generate_group_by() {
         if(count($this->group) == 0) return '';
         return ' GROUP BY '.implode(', ', $this->group);
     }

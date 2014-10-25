@@ -4,9 +4,7 @@
  *
  * @author luwdo
  */
-class create_query extends executable_query{
-	
-	
+class create_query extends executable_query {
 	public function generate_query(){
         $this->params = array();
         
