@@ -1,16 +1,11 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of executable_query
+ * Represents a query which performs an executive action, such as a CREATE,
+ * GRANT, etc
  *
  * @author luwdo
  */
-class executable_query extends query{
-	//put your code here
+class executable_query extends query {
+	
 }

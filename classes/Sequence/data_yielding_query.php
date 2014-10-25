@@ -1,7 +1,7 @@
 <?php
 /**
- * Description of data_yielding_query
- *
+ * Represents a query which yields data, such as a SELECT or SHOW, etc.
+ * 
  * @author luwdo
  */
 class data_yielding_query extends filterable_query{
