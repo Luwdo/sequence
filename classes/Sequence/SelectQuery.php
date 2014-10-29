@@ -1,5 +1,5 @@
 <?php
-
+namespace Sequence;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,17 +11,17 @@
  *
  * @author luwdo
  */
-class select_query extends data_yielding_query{
+class SelectQuery extends DataYieldingQuery{
 	public $select = '*'; // if array assming that you are aliasing it?
 	
 	
-	public function generate_query(){
+	public function generateQuery(){
         $this->params = array();
-        return 'SELECT '.$this->generate_select().' FROM '.$this->table.$this->generate_where().$this->generate_group_by().$this->generate_order_by().$this->generate_limit();
+        return 'SELECT '.$this->generateSelect().' FROM '.$this->table.$this->generateWhere().$this->generateGroupBy().$this->generateOrderBy().$this->generateLimit();
     }
 	
 	
-	public function generate_select(){
+	public function generateSelect(){
         if(!is_array($this->select)){
             if($this->result_type == self::COUNT){
                 return 'COUNT('.$this->select.')';

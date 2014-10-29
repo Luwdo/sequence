@@ -1,24 +1,25 @@
 <?php
+namespace Sequence;
 /**
  * Description of filterable_query
  *
  * @author luwdo
  */
-class filterable_query extends query{
+class FilterableQuery extends Query{
 	 public $where = array();
 	 public $limit = null;
 	 public $offset = null;
 	 public $order = array();
 	 
-	 public function generate_where() {
+	 public function generateWhere() {
         
         if(count($this->where) == 0)
             return '';
         
-        $set = new query_where_set($this->where);
+        $set = new QueryWhereSet($this->where);
         
         $cond = $set->generate();
-        $this->params = $set->get_params();
+        $this->params = $set->getParams();
         return ' WHERE '.$cond;
         
         /*$where_parts = array();
@@ -38,7 +39,7 @@ class filterable_query extends query{
         return ' WHERE '.implode(' AND ', $where_parts);*/
     }
 	
-	public function generate_order_by(){
+	public function generateOrderBy(){
         if(count($this->order) == 0) return '';
         $order_parts = array();
         foreach($this->order as $column => $direction){
@@ -47,7 +48,7 @@ class filterable_query extends query{
         return ' ORDER BY '.implode(', ', $order_parts);
     }
 	
-	public function generate_limit(){
+	public function generateLimit(){
         if(!is_numeric($this->limit)) return '';
         
         if($this->offset && $this->limit)

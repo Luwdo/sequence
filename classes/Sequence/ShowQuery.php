@@ -1,5 +1,5 @@
 <?php
-
+namespace Sequence;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,7 +11,7 @@
  *
  * @author luwdo
  */
-class show_query extends data_yielding_query{
+class ShowQuery extends DataYieldingQuery{
 	
 	
 }

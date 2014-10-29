@@ -1,6 +1,6 @@
 <?php
-
-class query_where_set{
+namespace Sequence;
+class QueryWhereSet{
     public $where = array();
     public $type;
     
@@ -29,22 +29,22 @@ class query_where_set{
                 foreach($v as $p){
                     $this->params[] = $p;
                 }
-            } else if (is_object($v) && $v instanceof query_where_set) {
+            } else if (is_object($v) && $v instanceof QueryWhereSet) {
                 $where_parts[] = '('.$v->generate().')';
-                $this->params = array_merge($this->params, $v->get_params());
+                $this->params = array_merge($this->params, $v->getParams());
                 continue;
             } else {
                 $n = 1;
                 $this->params[] = $v;
             }
             
-            $where_parts[] = $this->generate_unparameterized_expression($k, $n);
+            $where_parts[] = $this->generateUnparameterizedExpression($k, $n);
         }
         
         return implode(' '.$this->separator.' ', $where_parts);
     }
      
-    public function generate_unparameterized_expression($key, $num) {
+    public function generateUnparameterizedExpression($key, $num) {
          $operators = array('>', '<', '>=', '<=', '!=', 'LIKE', 'NOT LIKE');
          $use_operator = '=';
          foreach($operators as $operator) {
@@ -77,7 +77,7 @@ class query_where_set{
          return "($exp)";
     }
     
-    public function get_params() {
+    public function getParams() {
         return $this->params;
     }
 }

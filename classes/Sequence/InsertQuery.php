@@ -1,5 +1,5 @@
 <?php
-
+namespace Sequence;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,15 +11,15 @@
  *
  * @author luwdo
  */
-class insert_query extends executable_query{
+class InsertQuery extends ExecutableQuery{
 	public $set = array();
 	
-	public function generate_query(){
+	public function generateQuery(){
         $this->params = array();
-        return 'INSERT INTO '.$this->table.' '.$this->generate_insert();
+        return 'INSERT INTO '.$this->table.' '.$this->generateInsert();
     }
 	
-	public function generate_insert(){
+	public function generateInsert(){
         $target = array();
         $values = array();
         foreach($this->set as $k => $v){

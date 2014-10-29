@@ -1,5 +1,5 @@
 <?php
-
+namespace Sequence;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,15 +11,15 @@
  *
  * @author luwdo
  */
-class update_query extends filterable_query{
+class UpdateQuery extends FilterableQuery{
 	public $set = array();
 	
-	public function generate_query(){
+	public function generateQuery(){
         $this->params = array();
-        return 'UPDATE '.$this->table.' '.$this->generate_update().$this->generate_where().$this->generate_group_by().$this->generate_order_by().$this->generate_limit();
+        return 'UPDATE '.$this->table.' '.$this->generateUpdate().$this->generateWhere().$this->generateGroupBy().$this->generateOrderBy().$this->generateLimit();
     }
 	
-	public function generate_update(){
+	public function generateUpdate(){
         $update = array();
         foreach($this->set as $k => $v){
             $update[] = $k.' = \''.$v.'\'';
