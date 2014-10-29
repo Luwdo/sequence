@@ -1,6 +1,6 @@
 <?php
-
-class db extends mysqli{
+namespace Sequence;
+class Database extends mysqli{
     static $instance = null;
     
     private static $host = '';

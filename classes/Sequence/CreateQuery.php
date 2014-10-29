@@ -1,11 +1,12 @@
 <?php
+namespace Sequence;
 /**
  * Description of create_query
  *
  * @author luwdo
  */
-class create_query extends executable_query {
-	public function generate_query(){
+class CreateQuery extends ExecutableQuery {
+	public function generateQuery(){
         $this->params = array();
         
         if($this->type == self::SELECT){
