@@ -11,7 +11,7 @@
  *
  * @author luwdo
  */
-class autoloader {
+class Autoloader {
 	public static function load($class_name){
 		require_once(__DIR__.'/Config.php');
         require_once(__DIR__.'/classes/Sequence/'.$class_name.'.php');
