@@ -1,4 +1,5 @@
 <?php
+namespace Sequence;
 /**
  * Base class of queries within Sequence. 
  * 
@@ -14,7 +15,7 @@
  * @property string table Name of the table or view being selected (Alias of 'from')
  * 
  */
-class query {
+class Query {
     /**
 	 * The table or view which is being selected from.
 	 * 
@@ -41,9 +42,9 @@ class query {
 	 * Allows you to specialize the given query into the type of query
 	 * you are calling specialize() from.
 	 * 
-	 * @param query $query Must be a Sequence query object.
+	 * @param Query $query Must be a Sequence query object.
 	 */
-	public static function specialize(query $query)
+	public static function specialize(Query $query)
 	{
 		$class = get_called_class();
 		$instance = new $class();
@@ -100,7 +101,7 @@ class query {
 	 * @return string 
 	 */
     public function __toString() {
-            return $this->query_string();
+            return $this->queryString();
     }
     
     //Object Manipulation
@@ -115,16 +116,16 @@ class query {
 		$static = !(isset($this) && get_class($this) == __CLASS__);
 		
 		if ($static)
-			return new select_query ();
+			return new SelectQuery ();
 		
-		return select_query::specialize($this);
+		return SelectQuery::specialize($this);
     }
 	
 	/**
 	 * @deprecated 
 	 */
-    public static function new_select($select = null){
-        return new select_query();
+    public static function newSelect($select = null){
+        return new SelectQuery();
     }
     
 	/**
@@ -136,16 +137,16 @@ class query {
 		$static = !(isset($this) && get_class($this) == __CLASS__);
 		
 		if ($static)
-			return new update_query ();
+			return new UpdateQuery ();
 		
-		return update_query::specialize($this);
+		return UpdateQuery::specialize($this);
     }
 	
 	/**
 	 * @deprecated 
 	 */
-    public static function new_update(){
-		return new update_query();
+    public static function newUpdate(){
+		return new UpdateQuery();
     }
 	
     //------
@@ -158,16 +159,16 @@ class query {
 		$static = !(isset($this) && get_class($this) == __CLASS__);
 		
 		if ($static)
-			return new insert_query ();
+			return new InsertQuery ();
 		
-		return insert_query::specialize($this);
+		return InsertQuery::specialize($this);
     }
 	
 	/**
 	 * @deprecated
 	 */
-    public static function new_insert() {
-		return new insert_query();
+    public static function newInsert() {
+		return new InsertQuery();
     }
 	
 	/**
@@ -179,16 +180,16 @@ class query {
 		$static = !(isset($this) && get_class($this) == __CLASS__);
 		
 		if ($static)
-			return new delete_query ();
+			return new DeleteQuery ();
 		
-		return delete_query::specialize($this);
+		return DeleteQuery::specialize($this);
     }
 	
 	/**
 	 * @deprecated 
 	 */
-    public static function new_delete(){
-        $query = new query();
+    public static function newDelete(){
+        $query = new Query();
         $query->type = self::DELETE;
         return $query;
     }
@@ -259,7 +260,7 @@ class query {
 	 * @param type $default_direction Optional, when $mixed is a string column name, specifies the direction to sort by. 
 	 * @return \query The revised query
 	 */
-    public function order_by($mixed, $default_direction = 'ASC') {
+    public function orderBy($mixed, $default_direction = 'ASC') {
         if(!is_array($mixed)) {
 			$this->order[$mixed] = $default_direction;
 			return $this;
@@ -281,7 +282,7 @@ class query {
 	 * @return \query The revised query
 	 * @throws Exception $mixed is an empty array
 	 */
-    public function group_by($mixed) {
+    public function groupBy($mixed) {
         if(!is_array($mixed)) {
 			$this->group[] = $mixed;
 			return $this;
@@ -330,7 +331,7 @@ class query {
 	 * @deprecated 
 	 * @return \query
 	 */
-    public function single_or_null() {
+    public function singleOrNull() {
 		throw new Exception("Obsolete.");
     }
     
@@ -340,7 +341,7 @@ class query {
 	 * @param string $class Name of the class to use
 	 * @return \query The revised query.
 	 */
-    public function result_class($class) {
+    public function resultClass($class) {
 		return $this->model($class);
     }
 	
@@ -392,7 +393,7 @@ class query {
         }
 		
         if(count($this->params) > 0) {
-            $params = $this->build_referenced_parameter_bindings();
+            $params = $this->buildReferencedParameterBindings();
             call_user_func_array(array($mysqli_stmt, 'bind_param'), $params);
         }
         
@@ -442,9 +443,9 @@ class query {
         return $this->result;
     }
     
-    public function build_referenced_parameter_bindings() {
+    public function buildReferencedParameterBindings() {
         $params = array();
-        $types = $this->build_parameter_binding_types();
+        $types = $this->buildParameterBindingTypes();
         $params[] = &$types;
 		
         foreach($this->params as $k => $v) {
@@ -453,7 +454,7 @@ class query {
         return $params;
     }
     
-    public function build_parameter_binding_types() {
+    public function buildParameterBindingTypes() {
         $types = '';                        
         foreach($this->params as $param) {        
             if(is_int($param)) {
@@ -505,7 +506,7 @@ class query {
 	 * Generate the SQL query string.
 	 * @return string
 	 */
-    public function query_string(){
+    public function queryString(){
         $query = $this->generate_query();
         
         foreach($this->params as $param){
@@ -606,7 +607,7 @@ class query {
 	 * Generate a GROUP BY clause
 	 * @return string
 	 */
-    public function generate_group_by() {
+    public function generateGroupBy() {
         if(count($this->group) == 0) return '';
         return ' GROUP BY '.implode(', ', $this->group);
     }
