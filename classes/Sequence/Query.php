@@ -24,17 +24,8 @@ class Query {
 	public $from = null;
     public $params = array();
     public $group = array();
-    public $type = null;
+    //public $type = null;
     public $result = null;
-	
-    //public $order = array();
-    //public $set = array();
-    //public $limit = null;
-    //public $offset = null;
-    //public $class = null;
-    //public $select = '*'; // if array assuming that you are aliasing it?
-    //public $where = array();
-    //public $result_type = null;
 	
 	public $stmt = null;
 	
@@ -76,23 +67,6 @@ class Query {
 			return null;
 		}
 	}
-            
-    //result types
-//    const SINGLE_OR_NULL = 1;
-//    const MULTIBLE_OR_EMPTY_ARRAY = 2;
-//    const COUNT = 3;
-            
-    //query types
-//    const SELECT = 1;
-//    const UPDATE = 2;
-//    const INSERT = 3;
-//    const DELETE = 4;
-    
-//    public function __construct($args = array()) {
-//        foreach($this as $field => $value){
-//            if(isset($args[$field])) $this->$field = $args[$field];
-//        }
-//    }
     
 	/**
 	 * Convert this object into a string.
@@ -142,13 +116,6 @@ class Query {
 		return UpdateQuery::specialize($this);
     }
 	
-	/**
-	 * @deprecated 
-	 */
-    public static function newUpdate(){
-		return new UpdateQuery();
-    }
-	
     //------
     /**
 	 * Begin a new INSERT operation against this query.
@@ -165,13 +132,6 @@ class Query {
     }
 	
 	/**
-	 * @deprecated
-	 */
-    public static function newInsert() {
-		return new InsertQuery();
-    }
-	
-	/**
 	 * Begin a new DELETE operation against this query.
 	 * 
 	 * @return \delete_query
@@ -183,15 +143,6 @@ class Query {
 			return new DeleteQuery ();
 		
 		return DeleteQuery::specialize($this);
-    }
-	
-	/**
-	 * @deprecated 
-	 */
-    public static function newDelete(){
-        $query = new Query();
-        $query->type = self::DELETE;
-        return $query;
     }
 	
     /**
@@ -216,65 +167,6 @@ class Query {
 	}
     
 	/**
-	 * Add more conditions to the current query.
-	 * 
-	 * @param type $conditions
-	 * @return \query The new query
-	 * @throws Exception
-	 */
-    public function where($conditions) {
-        if(!is_array($conditions))
-            throw new Exception('Where conditions must be an array');
-		
-        if(count($conditions) == 0)
-            throw new Exception('Where conditions must not be an empty array');
-		
-        $this->where = array_merge($this->where, $conditions);
-        return $this;
-    }
-    
-	/**
-	 * Declare what content needs to be set within this query.
-	 * 
-	 * @param array $values An associative array of field name => value.
-	 * @return \query The revised query
-	 * @throws Exception when invalid $values are provided or $values is empty
-	 */
-    public function set($values) {
-        if(!is_array($values))
-            throw new Exception('Set values must be an array');
-		
-        if(count($values) == 0)
-            throw new Exception('Set values must not be an empty array');
-		
-        $this->set = array_merge($this->set, $values);
-		
-        return $this;
-    }
-    
-	/**
-	 * Declare that the result set should be ordered by the given field and direction,
-	 * in addition to what the query currently orders by.
-	 * 
-	 * @param mixed $mixed Name of the column to order by, or an associative array containing field => direction
-	 * @param type $default_direction Optional, when $mixed is a string column name, specifies the direction to sort by. 
-	 * @return \query The revised query
-	 */
-    public function orderBy($mixed, $default_direction = 'ASC') {
-        if(!is_array($mixed)) {
-			$this->order[$mixed] = $default_direction;
-			return $this;
-		} 
-		
-		foreach($mixed as $column => $direction){
-			if($direction != 'DESC' && $direction != 'ASC') $direction = $default_direction;
-			$this->order[$column] = $direction;
-		}
-		
-        return $this;
-    }
-    
-	/**
 	 * Declare that the query should be grouped by the given fields, in addition to what the
 	 * query is currently grouped by.
 	 * 
@@ -294,45 +186,6 @@ class Query {
         $this->group = array_merge($this->group, $mixed);
 		
         return $this;
-    }
-    
-	/**
-	 * Declare that the result set should be limited by the given amount of rows, and 
-	 * optionally offset by the given amount of rows.
-	 * 
-	 * @param int $limit The amount of rows to limit the query by.
-	 * @param int $offset Optional, offset into the result set to start at
-	 * @return \query The revised query
-	 * @throws Exception Limit or offset is non-numeric
-	 */
-    public function limit($limit, $offset = null){
-        if(!is_numeric($limit))
-            throw new Exception('Limit must me numeric');
-        if($offset != null && !is_numeric($offset))
-            throw new Exception('Offset must me numeric');
-        
-        $this->limit = $limit;
-        $this->offset = $offset;
-        return $this;
-    }
-    
-	/**
-	 * Return the first result row of the query. The query will
-	 * be executed if necessary.
-	 * 
-	 * @return object The result row
-	 */
-    public function first(){
-        foreach ($this->limit(1) as $row) 
-			return $row;
-    }
-    
-	/**
-	 * @deprecated 
-	 * @return \query
-	 */
-    public function singleOrNull() {
-		throw new Exception("Obsolete.");
     }
     
 	/**
@@ -359,17 +212,17 @@ class Query {
         return $this;	
 	}
     
-	/**
-	 * Return the amount of rows within the result set.
-	 * @return int The amount of rows
-	 */
-    public function count() {
-        $currrent_result_type = $this->result_type;
-        $this->result_type = self::COUNT;
-        $result = $this->run();
-        $this->result_type = $currrent_result_type;
-        return $result;
-    }
+//	/**
+//	 * Return the amount of rows within the result set.
+//	 * @return int The amount of rows
+//	 */
+//    public function count() {
+//        $currrent_result_type = $this->result_type;
+//        $this->result_type = self::COUNT;
+//        $result = $this->run();
+//        $this->result_type = $currrent_result_type;
+//        return $result;
+//    }
     
     //public function greedy_search($field, $search){
     //    return $this->where(array($field.' LIKE' => ));
@@ -517,91 +370,6 @@ class Query {
         }
         return $query;
     }
-    
-//    public function generate_select(){
-//        if(!is_array($this->select)){
-//            if($this->result_type == self::COUNT){
-//                return 'COUNT('.$this->select.')';
-//            }
-//            return $this->select;
-//        }
-//        
-//        //aliasing should be done latter all at once
-//        /*$select_parts = array();
-//        foreach($this->select as $alias => $column){
-//            $select_parts[] = $column.' AS '.$alias;
-//        }
-//        return implode(', ', $select_parts);*/
-//    }
-    
-//    public function generate_update(){
-//        $update = array();
-//        foreach($this->set as $k => $v){
-//            $update[] = $k.' = \''.$v.'\'';
-//        }
-//        
-//        return ' SET '.implode(', ', $update);
-//    }
-    
-//    public function generate_insert(){
-//        $target = array();
-//        $values = array();
-//        foreach($this->set as $k => $v){
-//            $this->params[] = $v;
-//            $target[] = $k;
-//            $values[] = '?';
-//        }
-//        
-//        return '('.implode(', ', $target).') VALUES ('.implode(', ', $values).')';
-//    }
-    
-//    public function generate_where() {
-//        
-//        if(count($this->where) == 0)
-//            return '';
-//        
-//        $set = new query_where_set($this->where);
-//        
-//        $cond = $set->generate();
-//        $this->params = $set->get_params();
-//        return ' WHERE '.$cond;
-//        
-//        /*$where_parts = array();
-//        foreach($this->where as $k => $v){
-//            if(is_array($v)){
-//                $n = count($v);
-//                foreach($v as $p){
-//                    $this->params[] = $p;
-//                }
-//            }
-//            else{
-//                $n = 1;
-//                $this->params[] = $v;
-//            }
-//            $where_parts[] = $this->generate_unparameterized_expression($k, $n);
-//        }
-//        return ' WHERE '.implode(' AND ', $where_parts);*/
-//    }
-    
-    
-    
-//    public function generate_order_by(){
-//        if(count($this->order) == 0) return '';
-//        $order_parts = array();
-//        foreach($this->order as $column => $direction){
-//            $order_parts[] = $column.' '.$direction;
-//        }
-//        return ' ORDER BY '.implode(', ', $order_parts);
-//    }
-    
-//    public function generate_limit(){
-//        if(!is_numeric($this->limit)) return '';
-//        
-//        if($this->offset && $this->limit)
-//            return ' LIMIT '.$this->offset.', '.$this->limit;
-//        
-//        return ' LIMIT '.$this->limit;
-//    }
     
 	/**
 	 * Generate a GROUP BY clause

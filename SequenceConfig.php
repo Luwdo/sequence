@@ -5,10 +5,10 @@
  * @author luwdo
  */
 class SequenceConfig {
-	protected static $dbHost = ''; //servername
-	protected static $dbName = ''; //database name
-	protected static $dbUsername = '';
-	protected static $dbPassword = '';
+	protected $dbHost = ''; //servername
+	protected $dbName = ''; //database name
+	protected $dbUsername = '';
+	protected $dbPassword = '';
 	
 	private static $config = null;
 	
@@ -49,7 +49,7 @@ class SequenceConfig {
 	 * @return \Config
 	 */
 	public function setDbHost($dbHost) {
-		self::$dbHost = $dbHost;
+		$this->dbHost = $dbHost;
 		return $this;
 	}
 	
@@ -59,7 +59,7 @@ class SequenceConfig {
 	 * @return \Config
 	 */
 	public function setDbName($dbName) {
-		self::$dbName = $dbName;
+		$this->dbName = $dbName;
 		return $this;
 	}
 	
@@ -69,7 +69,7 @@ class SequenceConfig {
 	 * @return \Config
 	 */
 	public function setDbUsername($hostUsername) {
-		self::$dbUsername = $hostUsername;
+		$this->dbUsername = $hostUsername;
 		return $this;
 	}
 	
@@ -79,24 +79,24 @@ class SequenceConfig {
 	 * @return \Config
 	 */
 	public function setDbPassword($dbPassword) {
-		self::$dbPassword = $dbPassword;
+		$this->dbPassword = $dbPassword;
 		return $this;
 	}
 	
 	
 	public function getDbHost() {
-		return self::$dbHost;
+		return $this->dbHost;
 	}
 	
 	public function getDbName() {
-		return self::$dbName;
+		return $this->dbName;
 	}
 	
 	public function getDbUsername() {
-		return self::$dbUsername;
+		return $this->dbUsername;
 	}
 	
 	public function getDbPassword() {
-		return self::$dbPassword;
+		return $this->dbPassword;
 	}
 }
