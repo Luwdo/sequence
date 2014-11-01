@@ -4,7 +4,7 @@
  *
  * @author luwdo
  */
-class Config {
+class SequenceConfig {
 	protected static $dbHost = ''; //servername
 	protected static $dbName = ''; //database name
 	protected static $dbUsername = '';
