@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of InsertItem
- * Part of an insert query consisting of the a column name name;
+ * Part of an insert query consisting of the a column name;
  * @author luwdo
  */
 class InsertItem {

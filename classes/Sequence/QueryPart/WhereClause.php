@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of WhereClause
- *
+ * The WHERE clause of an filterable query
  * @author luwdo
  */
 class WhereClause {

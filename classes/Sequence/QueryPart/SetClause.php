@@ -1,7 +1,6 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of SetClause
  * The SET clause of an update Query
  * @author luwdo
  */

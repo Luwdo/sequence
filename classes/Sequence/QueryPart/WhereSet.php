@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of WhereSet
- *
+ * A set of WhereConditions in an filterable query.
  * @author luwdo
  */
 class WhereSet {

@@ -1,12 +1,13 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * The DELETE clause of an Delete Query
+ * The GROUP BY clause of an groupable Query
  * @author luwdo
  */
-class DeleteClause {
+class GroupByClause {
 	public $operand = null;
+	
 	public function __toString() {
-		return "DELETE {$this->operand}";
+		return "GROUP BY {$this->operand}";
 	}
 }

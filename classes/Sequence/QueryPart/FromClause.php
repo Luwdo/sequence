@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of FromClause
- *
+ * The FROM clause of an select Query
  * @author luwdo
  */
 class FromClause {

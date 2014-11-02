@@ -1,10 +1,10 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * A set of SelectItem in an select query
+ * A set of OrderByItem in an orderable query
  * @author luwdo
  */
-class SelectSet {
+class OrderBySet {
 	public $operands = null;
 	
 	public function __toString() {

@@ -1,7 +1,6 @@
 <?php
 /**
- * Description of Table
- *
+ * Table selection in a query
  * @author luwdo
  */
 class Table {

@@ -1,7 +1,6 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of UpdateItem
  * Part of an update query consisting of the targeted table and its alias.
  * @author luwdo
  */
@@ -14,7 +13,7 @@ class UpdateItem {
 	public function __toString() {
 		$alias = '';
 		if($this->alias !== null){
-			$alias = "AS {$this->alias}";
+			$alias = " AS {$this->alias}";
 		}
 		return $this->table.$alias;
 	}

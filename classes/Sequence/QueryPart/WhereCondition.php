@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of WhereCondition
- *
+ * Part of an filterable query consisting a condition for selection.
  * @author luwdo
  */
 class WhereCondition {

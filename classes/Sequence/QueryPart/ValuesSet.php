@@ -1,7 +1,6 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of ValuesSet
  * A set of values in an insert query
  * @author luwdo
  */

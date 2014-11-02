@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of SelectClause
- *
+ * The SELECT clause of an Select Query
  * @author luwdo
  */
 class SelectClause {

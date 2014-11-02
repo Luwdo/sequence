@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of DeleteSet
- *
+ * A set of DeleteItems in an Delete query
  * @author luwdo
  */
 class DeleteSet {

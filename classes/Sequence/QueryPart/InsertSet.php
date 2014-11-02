@@ -1,7 +1,6 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of InsertSet
  * A set of insertItems in an update query
  * @author luwdo
  */

@@ -1,7 +1,6 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of InsertClause
  * The INSERT INTO clause of an insert query
  * @author luwdo
  */

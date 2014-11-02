@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of JoinClause
- *
+ * The JOIN clause of an joinable Query
  * @author luwdo
  */
 class JoinClause {

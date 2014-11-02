@@ -1,8 +1,7 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of LimitClause
- *
+ * The LIMIT clause of an limitable Query
  * @author luwdo
  */
 class LimitClause {
