@@ -5,19 +5,29 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class JoinClause {
-	public $table = null;
+	/**
+	 * table
+	 * @var type 
+	 */
+	public $operand = null;
 	public $alias = null;
 	/**
 	 * Query WhereSet or QueryCondition
 	 * @var type 
 	 */
-	public $operand = null;
+	public $condition = null;
+	public $type = null;
+	
+	//join types
+	const JOIN = 'JOIN';//inner join
+	const LEFT_JOIN = 'LEFT JOIN';
+	const RIGHT_JOIN = 'RIGHT JOIN';
 	
 	public function __toString() {
 		$alias = '';
 		if($this->alias !== null){
 			$alias = "AS {$this->alias}";
 		}
-		return "JOIN {$this->table}{$alias} ON {$this->operand}";
+		return "{$this->type} {$this->operand}{$alias} ON {$this->condition}";
 	}
 }

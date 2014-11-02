@@ -5,9 +5,9 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class SetSet {
-	public $setItems = null;
+	public $operands = null;
 	
 	public function __toString() {
-		return implode(', ', $this->setItems);
+		return implode(', ', $this->operands);
 	}
 }

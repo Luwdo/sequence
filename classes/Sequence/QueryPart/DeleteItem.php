@@ -5,8 +5,12 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class DeleteItem {
-	public $table = null;
+	/**
+	 * table
+	 * @var type 
+	 */
+	public $operand = null;
 	public function __toString() {
-		return $this->table;
+		return $this->operand;
 	}
 }

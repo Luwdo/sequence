@@ -5,9 +5,9 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class UpdateSet {
-	public $tables = null;
+	public $operands = null;
 	
 	public function __toString() {
-		return implode(', ', $this->tables);
+		return implode(', ', $this->operands);
 	}
 }

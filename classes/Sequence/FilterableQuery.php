@@ -8,8 +8,8 @@ namespace Sequence;
 class FilterableQuery extends Query{
 	 public $where = array();
 	 public $limit = null;
-	 public $offset = null;
-	 public $order = array();
+	 //public $offset = null;
+	 public $orderby = array();
 	 
 	 
 	 /**

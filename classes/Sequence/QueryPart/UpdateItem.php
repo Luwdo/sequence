@@ -5,7 +5,7 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class UpdateItem {
-	public $table = null;
+	public $operand = null;
 	public $alias = null;
 	
 	//UPDATE items,month SET items.price=month.price WHERE items.id=month.id;
@@ -15,6 +15,6 @@ class UpdateItem {
 		if($this->alias !== null){
 			$alias = " AS {$this->alias}";
 		}
-		return $this->table.$alias;
+		return $this->operand.$alias;
 	}
 }

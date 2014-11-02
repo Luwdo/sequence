@@ -5,8 +5,12 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class DeleteSet {
-	public $tables = null;
+	/**
+	 * table
+	 * @var type 
+	 */
+	public $operands = null;
 	public function __toString() {
-		return implode(', ', $this->tables);
+		return implode(', ', $this->operands);
 	}
 }

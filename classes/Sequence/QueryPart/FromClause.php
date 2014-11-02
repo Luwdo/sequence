@@ -5,7 +5,7 @@ namespace Sequence\QueryPart;
  * @author luwdo
  */
 class FromClause {
-	public $table = null;
+	public $operand = null;
 	public $alias = null;
 	
 	public function __toString() {
@@ -13,6 +13,6 @@ class FromClause {
 		if($this->alias !== null){
 			$alias = "AS {$this->alias}";
 		}
-		return "FROM {$this->table}{$alias}";
+		return "FROM {$this->operand}{$alias}";
 	}
 }
