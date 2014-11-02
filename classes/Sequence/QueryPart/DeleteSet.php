@@ -1,13 +1,12 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of UpdateSet
- * A set of UpdateItems in update query
+ * Description of DeleteSet
+ *
  * @author luwdo
  */
-class UpdateSet {
+class DeleteSet {
 	public $tables = null;
-	
 	public function __toString() {
 		return implode(', ', $this->tables);
 	}

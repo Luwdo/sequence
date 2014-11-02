@@ -1,14 +1,13 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of SetClause
- * The SET clause of an update Query
+ * Description of DeleteClause
+ *
  * @author luwdo
  */
-class SetClause {
+class DeleteClause {
 	public $operand = null;
-	
 	public function __toString() {
-		return "SET {$this->operand}";
+		return "DELETE {$this->operand}";
 	}
 }
