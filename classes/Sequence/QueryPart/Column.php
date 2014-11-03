@@ -15,5 +15,4 @@ class Column {
 		}
 		return "{$alias}`{$this->columnName}`";
 	}
-
 }
