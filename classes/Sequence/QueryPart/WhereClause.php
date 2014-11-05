@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * The WHERE clause of an filterable query
  * @author luwdo
  */
-class WhereClause {
+class WhereClause extends QueryClause{
 	public $operand = null;
 	
 	public function __toString() {

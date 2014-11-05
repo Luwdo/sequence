@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an update query consisting of a column and value
  * @author luwdo
  */
-class SetItem {
+class SetItem extends QueryItem{
 	public $column;
 	public $value;
 	

@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an DELETE query consisting of the a table;
  * @author luwdo
  */
-class DeleteItem {
+class DeleteItem extends QueryItem{
 	/**
 	 * table
 	 * @var type 

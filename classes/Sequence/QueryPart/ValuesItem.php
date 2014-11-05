@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an insert query consisting of values;
  * @author luwdo
  */
-class ValuesItem {
+class ValuesItem extends QueryItem{
 	public $values = null;
 	
 	public function __toString() {

@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * A set of WhereConditions in an filterable query.
  * @author luwdo
  */
-class WhereSet {
+class WhereSet extends QuerySet{
 	//put your code here
 	public $operator = null;
 	public $operands = null;		

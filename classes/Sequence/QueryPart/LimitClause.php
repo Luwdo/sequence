@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * The LIMIT clause of an limitable Query
  * @author luwdo
  */
-class LimitClause {
+class LimitClause extends QueryClause{
 	public $count = null;
 	public $offset = null;
 	

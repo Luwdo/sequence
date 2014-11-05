@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * A set of updateItems in an update query
  * @author luwdo
  */
-class SetSet {
+class SetSet extends QuerySet{
 	public $operands = null;
 	
 	public function __toString() {

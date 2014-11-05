@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an orderable query consisting of column and direction.
  * @author luwdo
  */
-class OrderByItem {
+class OrderByItem extends QueryItem{
 	public $column = null;
 	public $direction = null;
 	

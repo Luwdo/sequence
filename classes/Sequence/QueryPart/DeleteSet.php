@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * A set of DeleteItems in an Delete query
  * @author luwdo
  */
-class DeleteSet {
+class DeleteSet extends QuerySet{
 	/**
 	 * table
 	 * @var type 

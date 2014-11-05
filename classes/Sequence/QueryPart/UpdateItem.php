@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an update query consisting of the targeted table and its alias.
  * @author luwdo
  */
-class UpdateItem {
+class UpdateItem extends QueryItem{
 	public $operand = null;
 	public $alias = null;
 	

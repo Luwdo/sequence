@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an join statement;
  * @author luwdo
  */
-class JoinItem {
+class JoinItem extends QueryItem{
 	/**
 	 * table
 	 * @var type 

@@ -1,9 +1,10 @@
 <?php
+namespace Sequence\QueryPart;
 /**
  * Table selection in a query
  * @author luwdo
  */
-class Table {
+class Table extends QueryPart{
 	public $tableName = null;
 	
 	public function __toString() {

@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * The ORDER BY clause of an orderable Query
  * @author luwdo
  */
-class OrderByClause {
+class OrderByClause extends QueryClause{
 	//OrderByItem or OrderBySet
 	public $operand = null;
 	

@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an filterable query consisting a condition for selection.
  * @author luwdo
  */
-class WhereCondition {
+class WhereCondition extends QueryCondition{
 	public $leftHandSide = null;
 	public $operator = null;
 	public $rightHandSide = null;

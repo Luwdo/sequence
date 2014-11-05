@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * The FROM clause of an select Query
  * @author luwdo
  */
-class FromClause {
+class FromClause extends QueryClause{
 	public $operand = null;
 	public $alias = null;
 	

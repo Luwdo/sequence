@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * The SELECT clause of an Select Query
  * @author luwdo
  */
-class SelectClause {
+class SelectClause extends QueryClause{
 	public $operand = null;
 	
 	public function __toString() {

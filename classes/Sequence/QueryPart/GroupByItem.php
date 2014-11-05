@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an groupable query consisting of column and direction.
  * @author luwdo
  */
-class GroupByItem {
+class GroupByItem extends QueryItem{
 	public $column = null;
 	public $direction = null;
 	

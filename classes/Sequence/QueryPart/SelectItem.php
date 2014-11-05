@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an Select query consisting of a operand and alias
  * @author luwdo
  */
-class SelectItem {
+class SelectItem extends QueryItem{
 	//Column or query
 	public $operand = null;
 	
