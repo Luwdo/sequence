@@ -1,11 +1,15 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * The FROM clause of an select Query
+ * Item that you are operating on
  * @author luwdo
  */
-class FromClause extends QueryClause{
-	public $operand = null;
+class Operand extends Part{
+	/**
+	 * colum or table or query
+	 * @var mixed 
+	 */
+	public $target = null;
 	public $alias = null;
 	
 	public function __toString() {
@@ -13,6 +17,6 @@ class FromClause extends QueryClause{
 		if($this->alias !== null){
 			$alias = "AS {$this->alias}";
 		}
-		return "FROM {$this->operand}{$alias}";
+		return "{$this->target}{$alias}";
 	}
 }

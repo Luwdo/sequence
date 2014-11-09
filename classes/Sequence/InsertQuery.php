@@ -6,23 +6,30 @@ namespace Sequence;
  * @author luwdo
  */
 class InsertQuery extends ExecutableQuery{
-	public $set = array();
+	/**
+	 * 
+	 * @var QueryPart\InsertItem or QueryPart\InsertSet
+	 */
+	public $insert = null;
 	
-	public function generateQuery(){
-        $this->params = array();
-        return 'INSERT INTO '.$this->table.' '.$this->generateInsert();
-    }
+	/**
+	 *
+	 * @var QueryPart\ValuesITem or QueryPart\ValuesSet
+	 */
+	public $values = null;
 	
 	public function generateInsert(){
-        $target = array();
-        $values = array();
-        foreach($this->set as $k => $v){
-            $this->params[] = $v;
-            $target[] = $k;
-            $values[] = '?';
-        }
-        
-        return '('.implode(', ', $target).') VALUES ('.implode(', ', $values).')';
-    }
+		return "INSERT INTO {$this->operand} ({$this->insert})";
+	}
+	
+	public function generateValues(){
+		return "VALUES {$this->values}";
+	}
+	
+	public function __toString() {
+		return "{$this->generateInsert()} {$this->generateValues()}";
+	}
+	
+	
 	
 }

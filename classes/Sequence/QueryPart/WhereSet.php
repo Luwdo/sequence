@@ -4,10 +4,14 @@ namespace Sequence\QueryPart;
  * A set of WhereConditions in an filterable query.
  * @author luwdo
  */
-class WhereSet extends QuerySet{
-	//put your code here
-	public $operator = null;
-	public $operands = null;		
+class WhereSet extends Set{
+	/**
+	 * 
+	 * @var WhereItem or WhereSet
+	 */
+	public $operands = null;
+	
+	public $operator = null;		
 	
 	//operators
 	const _AND = 'AND';
@@ -30,6 +34,4 @@ class WhereSet extends QuerySet{
 	public function __toString() {
 		return implode(" {$this->operator} ", $this->operands);
 	}
-	
-	
 }

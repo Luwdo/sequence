@@ -4,12 +4,17 @@ namespace Sequence\QueryPart;
  * Part of an update query consisting of a column and value
  * @author luwdo
  */
-class SetItem extends QueryItem{
+class SetItem extends Item{
+	/**
+	 * value or query
+	 * @var type 
+	 */
+	public $operand;
+	
 	public $column;
-	public $value;
 	
 	public function __toString() {
-		return "{$this->column} = {$this->value}";
+		return "{$this->column} = {$this->operand}";
 	}
 	
 }

@@ -4,13 +4,13 @@ namespace Sequence\QueryPart;
  * A set of InsertItems in an update query
  * @author luwdo
  */
-class InsertSet extends QuerySet{
+class InsertSet extends Set{
 	/**
-	 * columns
-	 * @var type 
+	 * array of InsertItem
+	 * @var array 
 	 */
 	public $operands = null;
-	
+
 	public function __toString() {
 		return implode(', ', $this->operands);
 	}

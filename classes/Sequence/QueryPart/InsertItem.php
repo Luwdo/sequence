@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an insert query consisting of the a column name;
  * @author luwdo
  */
-class InsertItem extends QueryItem{
+class InsertItem extends Item{
 	
 	/**
 	 * column
@@ -13,6 +13,6 @@ class InsertItem extends QueryItem{
 	public $operand = null;
 	
 	public function __toString() {
-		return $this->column;
+		return $this->operand;
 	}
 }

@@ -6,10 +6,23 @@ namespace Sequence;
  * @author luwdo
  */
 class DeleteQuery extends FilterableQuery{
+	/**
+	 *
+	 * @var QueryPart\DeleteClause 
+	 */
+	public $delete;
 	
 	
-	public function generateQuery(){
-        $this->params = array();
-        return 'DELETE FROM '.$this->table.$this->generateWhere().$this->generateGroupBy().$this->generateOrderBy().$this->generateLimit();
-    }
+	public function generateDelete(){
+		if($this->delete != null){
+			return "DELETE {$this->delete}";
+		}
+		return "DELETE";
+	}
+
+	public function __toString() {
+		return "{$this->generateDelete()} {$this->generateFrom()} ".parent::__toString();
+	}
+	
+
 }

@@ -1,10 +1,10 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of QueryCondition
+ * Description of WhereOperand
  *
  * @author luwdo
  */
-class QueryCondition extends QueryPart{
+class WhereOperand {
 	//put your code here
 }

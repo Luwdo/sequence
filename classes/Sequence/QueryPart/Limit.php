@@ -4,12 +4,13 @@ namespace Sequence\QueryPart;
  * The LIMIT clause of an limitable Query
  * @author luwdo
  */
-class LimitClause extends QueryClause{
+class Limit extends QueryPart{	
+	//public $operand = null;
 	public $count = null;
 	public $offset = null;
 	
 	public function __toString() {
-		$limit = 'LIMIT '.$this->count;
+		$limit = $this->count;
 		if($this->offset !== null){
 			$limit .= ', '.$this->offset;
 		}

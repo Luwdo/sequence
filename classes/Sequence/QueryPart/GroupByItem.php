@@ -4,8 +4,14 @@ namespace Sequence\QueryPart;
  * Part of an groupable query consisting of column and direction.
  * @author luwdo
  */
-class GroupByItem extends QueryItem{
-	public $column = null;
+class GroupByItem extends Item{
+	/**
+	 * Column
+	 * @var Column
+	 */
+	public $operand = null;
+	
+	//operand is column
 	public $direction = null;
 	
 	//derections
@@ -17,6 +23,6 @@ class GroupByItem extends QueryItem{
 		if($this->direction !== null){
 			$direction = " {$this->direction}";
 		}
-		return "{$this->column}{$direction}";
+		return "{$this->operand}{$direction}";
 	}
 }

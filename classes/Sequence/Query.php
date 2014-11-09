@@ -17,17 +17,33 @@ namespace Sequence;
  */
 class Query {
     /**
-	 * The table or view which is being selected from.
 	 * 
-	 * @var type 
+	 * @var QueryPart\Operand
 	 */
-	public $from = null;
-    public $params = array();
-    public $group = array();
-    //public $type = null;
-    public $result = null;
+	public $operand = null;
+	
+	/**
+	 *
+	 * @var QueryPart\GroupBySet or QueryPart\GroupByItem
+	 */
+    public $groupBy = null;
+	
+	
+    public $queryResult = null;
 	
 	public $stmt = null;
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function generateGroupBy(){
+		if($this->groupBy != null){
+			return "GROUP BY {$this->groupBy}";
+		}
+		return "";
+	}
+	
 	
 	/**
 	 * Allows you to specialize the given query into the type of query
@@ -67,168 +83,17 @@ class Query {
 			return null;
 		}
 	}
-    
-	/**
-	 * Convert this object into a string.
-	 * Calls query_string() to determine its value.
-	 * 
-	 * @return string 
-	 */
-    public function __toString() {
-            return $this->queryString();
-    }
-    
-    //Object Manipulation
-    
-	/**
-	 * Begin a new SELECT operation against this query.
-	 * 
-	 * @param string $select The fields to select in this new SELECT query.
-	 * @return \select_query
-	 */
-    public function select($select = null) {
-		$static = !(isset($this) && get_class($this) == __CLASS__);
-		
-		if ($static)
-			return new SelectQuery ();
-		
-		return SelectQuery::specialize($this);
-    }
 	
-	/**
-	 * @deprecated 
-	 */
-    public static function newSelect($select = null){
-        return new SelectQuery();
-    }
-    
-	/**
-	 * Begin a new UPDATE operation against this query.
-	 * 
-	 * @return \update_query
-	 */
-    public function update() {
-		$static = !(isset($this) && get_class($this) == __CLASS__);
-		
-		if ($static)
-			return new UpdateQuery ();
-		
-		return UpdateQuery::specialize($this);
-    }
 	
-    //------
-    /**
-	 * Begin a new INSERT operation against this query.
-	 * 
-	 * @return \insert_query
-	 */
-    public function insert(){
-		$static = !(isset($this) && get_class($this) == __CLASS__);
-		
-		if ($static)
-			return new InsertQuery ();
-		
-		return InsertQuery::specialize($this);
-    }
 	
-	/**
-	 * Begin a new DELETE operation against this query.
-	 * 
-	 * @return \delete_query
-	 */
-    public function delete() {
-		$static = !(isset($this) && get_class($this) == __CLASS__);
-		
-		if ($static)
-			return new DeleteQuery ();
-		
-		return DeleteQuery::specialize($this);
-    }
 	
-    /**
-	 * Set the table or view which this query is pulling from.
-	 * Alias of from().
-	 * 
-	 * @param string $table
-	 * @return \query
-	 */
-    public function table($table){
-		return $this->from($table);
-    }
 	
-	/**
-	 * Set the table or view which this query is pulling from.
-	 * @param string $tableOrViewName Name of the table or view
-	 * @return \query
-	 */
-	public function from($tableOrViewName) {
-		$this->table = '`'.$tableOrViewName.'`';
-		return $this;
-	}
-    
-	/**
-	 * Declare that the query should be grouped by the given fields, in addition to what the
-	 * query is currently grouped by.
-	 * 
-	 * @param mixed $mixed Can be string field name or an array of field names.
-	 * @return \query The revised query
-	 * @throws Exception $mixed is an empty array
-	 */
-    public function groupBy($mixed) {
-        if(!is_array($mixed)) {
-			$this->group[] = $mixed;
-			return $this;
-		}
-		
-        if (count($mixed) == 0)
-            throw new Exception('Group by conditions must not be an empty array');
-		
-        $this->group = array_merge($this->group, $mixed);
-		
-        return $this;
-    }
-    
-	/**
-	 * Alias for model().
-	 * 
-	 * @param string $class Name of the class to use
-	 * @return \query The revised query.
-	 */
-    public function resultClass($class) {
-		return $this->model($class);
-    }
 	
-	/**
-	 * Set the name of the class to inflate result rows into.
-	 * Class must accept one paramter to its constructor: an
-	 * associative array of the row data. It is responsible for
-	 * integrating this data into the new instance.
-	 * 
-	 * @param string $class Name of the class to use
-	 * @return \query The revised query.
-	 */
-	public function model($class) {
-        $this->class = $class;
-        return $this;	
-	}
-    
-//	/**
-//	 * Return the amount of rows within the result set.
-//	 * @return int The amount of rows
-//	 */
-//    public function count() {
-//        $currrent_result_type = $this->result_type;
-//        $this->result_type = self::COUNT;
-//        $result = $this->run();
-//        $this->result_type = $currrent_result_type;
-//        return $result;
-//    }
-    
-    //public function greedy_search($field, $search){
-    //    return $this->where(array($field.' LIKE' => ));
-    //}
-    
-    //SQL Query Generation
+	
+	
+	
+	
+	
     
 	/**
 	 * Execute the query.
@@ -330,11 +195,11 @@ class Query {
 	 * @param string $input The content to escape
 	 * @return string The escaped content
 	 */
-    public static function sanatize($input) {
+    public static function sanitize($input) {
         return mysql_real_escape_string($input);
     }
 	
- /*   
+	 /*   
     public function generate_query(){
         $this->params = array();
         
@@ -344,39 +209,21 @@ class Query {
         else if($this->type == self::UPDATE){
             return 'UPDATE '.$this->table.' '.$this->generate_update().$this->generate_where().$this->generate_group_by().$this->generate_order_by().$this->generate_limit();
         }
-        else if($this->type == self::INSERT){
-            return 'INSERT INTO '.$this->table.' '.$this->generate_insert();
-        }
-        else if($this->type == self::DELETE){
-            return 'DELETE FROM '.$this->table.$this->generate_where().$this->generate_group_by().$this->generate_order_by().$this->generate_limit();
-        }
         else throw new Exception('Query type was not set');
         
     }
-  */  
+  */ 
 	
-	/**
-	 * Generate the SQL query string.
-	 * @return string
-	 */
-    public function queryString(){
-        $query = $this->generate_query();
-        
-        foreach($this->params as $param){
-            $pos = strpos($query,'?');
-            if ($pos !== false) {
-                $query = substr_replace($query,$param,$pos,1);
-            }
-        }
-        return $query;
-    }
-    
-	/**
-	 * Generate a GROUP BY clause
-	 * @return string
-	 */
-    public function generateGroupBy() {
-        if(count($this->group) == 0) return '';
-        return ' GROUP BY '.implode(', ', $this->group);
-    }
+	
+	public function from($operand, $alias = null){
+		$fromClause = new QueryPart\FromClause();
+		$fromClause->operand = $operand;
+		$fromClause->alias = $alias;
+		
+		$newQuery = clone $this;
+		$newQuery->fromClause = $fromClause;
+		return $newQuery;
+	}
+	
+	
 }

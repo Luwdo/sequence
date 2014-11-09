@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Part of an filterable query consisting a condition for selection.
  * @author luwdo
  */
-class WhereCondition extends QueryCondition{
+class WhereCondition extends WhereOperand{
 	public $leftHandSide = null;
 	public $operator = null;
 	public $rightHandSide = null;
@@ -44,4 +44,12 @@ class WhereCondition extends QueryCondition{
 		}
 		return "({$this->leftHandSide} {$this->operator} {$rightHand})";
 	}
+	
+	
+	public function equals($operand) {
+		$this->operator = self::EQUALS;
+		$this->rightHandSide = $operand;
+		$this->query->whereClause->add($this);
+	}
+	
 }

@@ -4,12 +4,15 @@ namespace Sequence\QueryPart;
  * A set of DeleteItems in an Delete query
  * @author luwdo
  */
-class DeleteSet extends QuerySet{
+class DeleteSet extends Set{
 	/**
-	 * table
-	 * @var type 
+	 * array of DeleteItem
+	 * @var array
 	 */
 	public $operands = null;
+
+	
+	//DELETE 
 	public function __toString() {
 		return implode(', ', $this->operands);
 	}

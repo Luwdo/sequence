@@ -4,7 +4,7 @@ namespace Sequence\QueryPart;
  * Column of a query
  * @author luwdo
  */
-class Column extends QueryPart{
+class Column extends Part{
 	public $columnName = null;
 	public $tableAlias = null;
 	

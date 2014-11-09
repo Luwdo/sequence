@@ -4,12 +4,13 @@ namespace Sequence\QueryPart;
  * Part of an join statement;
  * @author luwdo
  */
-class JoinItem extends QueryItem{
+class JoinItem extends Item{
 	/**
-	 * table
+	 * table or query
 	 * @var type 
 	 */
 	public $operand = null;
+	
 	public $alias = null;
 	/**
 	 * Query WhereSet or QueryCondition

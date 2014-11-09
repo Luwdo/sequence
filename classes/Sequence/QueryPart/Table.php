@@ -4,11 +4,11 @@ namespace Sequence\QueryPart;
  * Table selection in a query
  * @author luwdo
  */
-class Table extends QueryPart{
-	public $tableName = null;
+class Table extends Part{
+	public $name = null;
 	
 	public function __toString() {
-		return "`{$this->tableName}`";
+		return "`{$this->name}`";
 	}
 	
 }

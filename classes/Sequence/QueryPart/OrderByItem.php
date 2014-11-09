@@ -4,9 +4,13 @@ namespace Sequence\QueryPart;
  * Part of an orderable query consisting of column and direction.
  * @author luwdo
  */
-class OrderByItem extends QueryItem{
-	public $column = null;
+class OrderByItem extends Item{
 	public $direction = null;
+	/**
+	 * column name
+	 * @var type 
+	 */
+	public $operand = null;
 	
 	//derections
 	const ASC = 'ASC';
@@ -17,7 +21,7 @@ class OrderByItem extends QueryItem{
 		if($this->direction !== null){
 			$direction = " {$this->direction}";
 		}
-		return "{$this->column}{$direction}";
+		return "{$this->operand}{$direction}";
 	}
 	
 }

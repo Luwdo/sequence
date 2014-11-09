@@ -5,6 +5,9 @@ namespace Sequence;
  * 
  * @author luwdo
  */
-class DataYieldingQuery extends FilterableQuery{
-	public $class = null;
+abstract class DataYieldingQuery extends FilterableQuery{
+	public function __toString() {
+		parent::__toString();
+	}
+	
 }

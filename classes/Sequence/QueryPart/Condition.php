@@ -1,10 +1,9 @@
 <?php
 namespace Sequence\QueryPart;
 /**
- * Description of QueryItem
- *
+ * ALL YOUR CONDITION BELONG TO ME
  * @author luwdo
  */
-class QueryItem extends QueryPart {
+abstract class Condition extends Part{
 	//put your code here
 }

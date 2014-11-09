@@ -6,40 +6,30 @@ namespace Sequence;
  * @author luwdo
  */
 class UpdateQuery extends FilterableQuery{
-	public $set = array();
+	/**
+	 *
+	 * @var QueryPart\UpdateItem or QueryPart\UpdateSet
+	 */
+	public $update = null;
 	
 	/**
-	 * Declare what content needs to be set within this query.
-	 * 
-	 * @param array $values An associative array of field name => value.
-	 * @return \query The revised query
-	 * @throws Exception when invalid $values are provided or $values is empty
+	 *
+	 * @var QueryPart\SetItem or  QueryPart\SetSet
 	 */
-    public function set($values) {
-        if(!is_array($values))
-            throw new Exception('Set values must be an array');
-		
-        if(count($values) == 0)
-            throw new Exception('Set values must not be an empty array');
-		
-        $this->set = array_merge($this->set, $values);
-		
-        return $this;
-    }
-	
-	public function generateQuery(){
-        $this->params = array();
-        return 'UPDATE '.$this->table.' '.$this->generateUpdate().$this->generateWhere().$this->generateGroupBy().$this->generateOrderBy().$this->generateLimit();
-    }
+	public $set = null;
 	
 	public function generateUpdate(){
-        $update = array();
-        foreach($this->set as $k => $v){
-            $update[] = $k.' = \''.$v.'\'';
-        }
-        
-        return ' SET '.implode(', ', $update);
-    }
+		return "UPDATE {$this->update}";
+	}
 	
+	public function generateSet(){
+		return "SET {$this->set}";
+	}
+	
+	public function __toString() {
+		return "{$this->generateUpdate()} {$this->generateSet()} ".parent::__toString();
+	}
+	
+
 	
 }
